@@ -17,7 +17,7 @@ if __name__ == '__main__':
     testing_inputs = [[test.iloc[index][attribute] for attribute in attributes] for index in range(len(test))]
     testing_outputs = [test.iloc[i]['label'] for i in range(len(test))]
 
-    neural_net = MLPClassifier(hidden_layer_sizes=(1,), activation='identity', solver='adam',
+    neural_net = MLPClassifier(hidden_layer_sizes=(9, 9), activation='identity', solver='sgd',
                                learning_rate='adaptive', max_iter=2000, verbose=True)
     neural_net.fit(training_inputs, training_outputs)
     preprocess.visualize(Series(neural_net.loss_curve_))
@@ -40,7 +40,7 @@ if __name__ == '__main__':
         else:
             false_pos += 1
 
-    accuracy = precision = recall = fallout = specificity = 0
+    accuracy = precision = recall = specificity = 0
     try:
         accuracy = (true_pos + true_neg) / (true_pos + true_neg + false_pos + false_neg)
     except ZeroDivisionError:
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     except ZeroDivisionError:
         pass
 
-    print('\nAccuracy    = %.2f%%' % (accuracy*100))
-    print('Precision   = %.2f%%' % (precision*100))
-    print('Recall      = %.2f%%' % (recall*100))
-    print('Specificity = %.2f%%' % (specificity*100))
+    print('\nAccuracy    = %.2f%%' % (accuracy * 100))
+    print('Precision   = %.2f%%' % (precision * 100))
+    print('Recall      = %.2f%%' % (recall * 100))
+    print('Specificity = %.2f%%' % (specificity * 100))
