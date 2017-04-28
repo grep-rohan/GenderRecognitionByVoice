@@ -1,36 +1,84 @@
 import warnings
 
-from pandas import Series, DataFrame
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
-
-import preprocess
+from sklearn.preprocessing import LabelEncoder
 
 warnings.filterwarnings("ignore")
 
-attributes = ('meanfreq', 'sd', 'median', 'Q25', 'Q75', 'IQR')
+
+def read(filename='voice.csv'):
+    """
+    Read data from file.
+
+    :param filename:  Name of file containing data.
+    :return: data. (pandas DataFrame)
+    """
+    data = None
+    try:
+        data = pd.read_csv(filename)  # read data from csv file
+        print('Reading data')
+    except FileNotFoundError:
+        print('File not found!')
+
+    return data
+
+
+def visualize(data, style='ggplot', graph_type='line'):
+    """
+    Visualize data.
+
+    :param data: Data to visualize. (pandas dataframe)
+    :param style: matplotlib style. def = 'ggplot'
+    :param graph_type: Graph type ('line' or 'area'). def = 'line'
+    :return: None
+    """
+    try:
+        plt.style.use(style)
+    except OSError:
+        print('\nInvalid style!\nUsing ggplot\n')
+        plt.style.use('ggplot')
+    if graph_type == 'line':
+        data.plot()
+    elif graph_type == 'area':
+        data.plot.area(stacked=False)
+    else:
+        print('\nInvalid type!\nUsing line')
+        data.plot()
+    plt.show()
+
+
+def scale(data):
+    """
+    Scale the data between -1 and 1.
+
+    :param data: The data to be scaled. Data type : Pandas DataFrame
+    :return: Scaled data. Data Type : Pandas DataFrame
+    """
+    return (data - data.mean()) / (data.max() - data.min())
+
 
 if __name__ == '__main__':
-    data = preprocess.read()
-    train, test = preprocess.split(data)
-    # train = preprocess.scale(train)
-    # test = preprocess.scale(test)
-    training_inputs = [[train.iloc[index][attribute] for attribute in attributes] for index in range(len(train))]
-    training_outputs = [train.iloc[i]['label'] for i in range(len(train))]
-    testing_inputs = [[test.iloc[index][attribute] for attribute in attributes] for index in range(len(test))]
-    testing_outputs = [test.iloc[i]['label'] for i in range(len(test))]
+    voice_data = read()  # read data
+    x = voice_data.iloc[:, :-1]
+    x = scale(x)
+    y = voice_data.iloc[:, -1]
+    y = LabelEncoder().fit_transform(y)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=.6, random_state=1)
 
     neural_net = MLPClassifier(hidden_layer_sizes=(100,), activation='tanh', solver='sgd',
                                learning_rate='adaptive', max_iter=2000, verbose=True)
-    neural_net.fit(training_inputs, training_outputs)
-    preprocess.visualize(Series(neural_net.loss_curve_))
+    neural_net.fit(x_train, y_train)
+    visualize(pd.Series(neural_net.loss_curve_))
 
-    tests = DataFrame(columns=('Actual', 'Predicted'))
+    tests = pd.DataFrame(columns=('Actual', 'Predicted'))
     index = 0
-    for testing_input, testing_output in zip(testing_inputs, testing_outputs):
-        predicted_output = neural_net.predict(testing_input)
-        tests.loc[index] = [testing_output, predicted_output[0]]
+    for index in range(len(y_test)):
+        predicted_output = neural_net.predict(x_test.iloc[index, :])
+        tests.loc[index] = [y_test[index], predicted_output[0]]
         index += 1
-    preprocess.visualize(tests)
 
     true_pos = true_neg = false_pos = false_neg = 0
     for actual, predicted in zip(tests['Actual'], tests['Predicted']):

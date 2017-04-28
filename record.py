@@ -8,7 +8,7 @@ import pyaudio
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
-CHANNELS = 2
+CHANNELS = 1
 RATE = 44100
 RECORD_SECONDS = 3
 WAVE_OUTPUT_FILENAME = 'output.wav'
@@ -21,7 +21,7 @@ input('Speak for 3 secs after beep\nPress \'Enter\' to continue')
 for i in range(3):
     print(3 - i)
     time.sleep(1)
-winsound.PlaySound('beep.wav', winsound.SND_FILENAME)
+winsound.PlaySound('sounds/beep.wav', winsound.SND_FILENAME)
 print('\nRecording...')
 
 frames = []
