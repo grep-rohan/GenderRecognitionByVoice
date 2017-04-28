@@ -24,6 +24,16 @@ def read(filename='voice.csv'):
     return data
 
 
+def scale(data):
+    """
+    Scale the data between -1 and 1.
+
+    :param data: The data to be scaled. Data type : Pandas DataFrame
+    :return: Scaled data. Data Type : Pandas DataFrame
+    """
+    return (data - data.mean()) / (data.max() - data.min())
+
+
 def split(data, train_percent=.6):
     """
     Split data into training and testing data.
