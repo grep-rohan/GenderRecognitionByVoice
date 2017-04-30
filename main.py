@@ -5,6 +5,7 @@ from subprocess import run
 import pandas as pd
 
 import neural_net
+import sound_recorder
 
 if __name__ == '__main__':
     exit_ = False
@@ -20,10 +21,10 @@ if __name__ == '__main__':
             if not os.path.isfile('neural_net'):  # check if neural_net file exists
                 print('\nNeural net not trained. First train the neural net.')
             else:
-                # sound_recorder.run()
+                sound_recorder.run()
 
                 print('\nExtracting data from recorded voice...\n')
-                run(['Rscript', 'getAttributes1.r', os.getcwd(), 'output.wav'])
+                run(['Rscript', 'getAttributes.r', os.getcwd(), 'output.wav'])
 
                 print('\nPreprocessing extracted data...')
                 data = pd.read_csv('output/voiceDetails.csv')
