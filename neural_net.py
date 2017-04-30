@@ -90,37 +90,38 @@ def run():
     visualize(pd.Series(neural_net.loss_curve_), graph_type='area')  # plot loss curve
 
     print('\nCalculating Training Accuracy...')
-    training = pd.DataFrame(columns=('Actual', 'Predicted'))
-    for index in range(len(y_train)):
-        predicted_output = neural_net.predict(x_train.iloc[index, :])
-        training.loc[index] = [y_train[index], predicted_output[0]]
     correct = 0
-    for actual, predicted in zip(training['Actual'], training['Predicted']):
+    for index in range(len(y_train)):
+        predicted = neural_net.predict(x_train.iloc[index, :])
+        actual = y_train[index]
         if actual == predicted:
             correct += 1
-    print('Training Accuracy = %.1f%%' % (correct / len(training) * 100))
+    print('Training Accuracy = %.1f%%' % (correct / len(y_train) * 100))
 
     print('\nTesting Neural Net...')
-    tests = pd.DataFrame(columns=('Actual', 'Predicted'))
+    tp = tn = fp = fn = 0
     for index in range(len(y_test)):
-        predicted_output = neural_net.predict(x_test.iloc[index, :])
-        tests.loc[index] = [y_test[index], predicted_output[0]]
-    true_pos = true_neg = false_pos = false_neg = 0
-    for actual, predicted in zip(tests['Actual'], tests['Predicted']):
+        predicted = neural_net.predict(x_test.iloc[index, :])
+        actual = y_test[index]
         if actual == predicted == 0:
-            true_neg += 1
+            tn += 1
         elif actual == predicted == 1:
-            true_pos += 1
+            tp += 1
         elif actual == 0 != predicted:
-            false_pos += 1
+            fp += 1
         else:
-            false_neg += 1
-    accuracy = (true_pos + true_neg) / (true_pos + true_neg + false_pos + false_neg)
-    precision = true_pos / (true_pos + false_pos)
-    recall = true_pos / (true_pos + false_neg)
-    specificity = true_neg / (true_neg + false_pos)
+            fn += 1
+
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+    specificity = tn / (tn + fp)
     print('\nTesting Results:')
     print('Accuracy    = %.1f%%' % (accuracy * 100))
     print('Precision   = %.1f%%' % (precision * 100))
     print('Recall      = %.1f%%' % (recall * 100))
     print('Specificity = %.1f%%' % (specificity * 100))
+
+
+if __name__ == '__main__':
+    run()

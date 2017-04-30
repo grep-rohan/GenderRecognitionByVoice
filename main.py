@@ -10,7 +10,8 @@ import sound_recorder
 if __name__ == '__main__':
     exit_ = False
     while not exit_:
-        print('\nMenu\n1. Train Neural Net')
+        print('\nMenu')
+        print('1. Train Neural Net')
         print('2. Analyse Voice')
         print('3. Exit')
         option = input('Enter Option Number: ')
@@ -37,6 +38,7 @@ if __name__ == '__main__':
                 print()
                 print('Female' if neural_net.predict(data)[0] == 0 else 'Male')
         elif option == '3':
+            print('\nExiting...')
             exit_ = True
         else:
-            print('Invalid option. Please try again...')
+            print('\nInvalid option. Please try again...')
