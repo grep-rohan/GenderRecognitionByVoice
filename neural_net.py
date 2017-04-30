@@ -98,7 +98,7 @@ def run():
             correct += 1
     print('Training Accuracy = %.1f%%' % (correct / len(y_train) * 100))
 
-    print('\nTesting Neural Net...')
+    print('\nCalculating Testing Accuracy...')
     tp = tn = fp = fn = 0
     for index in range(len(y_test)):
         predicted = neural_net.predict(x_test.iloc[index, :])
@@ -116,11 +116,11 @@ def run():
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
     specificity = tn / (tn + fp)
-    print('\nTesting Results:')
-    print('Accuracy    = %.1f%%' % (accuracy * 100))
-    print('Precision   = %.1f%%' % (precision * 100))
-    print('Recall      = %.1f%%' % (recall * 100))
-    print('Specificity = %.1f%%' % (specificity * 100))
+    # print('\nTesting Results:')
+    print('Testing Accuracy    = %.1f%%' % (accuracy * 100))
+    # print('Precision   = %.1f%%' % (precision * 100))
+    # print('Recall      = %.1f%%' % (recall * 100))
+    # print('Specificity = %.1f%%' % (specificity * 100))
 
 
 if __name__ == '__main__':
