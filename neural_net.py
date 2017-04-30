@@ -54,12 +54,12 @@ def visualize(data, style='ggplot', graph_type='line'):
 
 def scale(data):
     """
-    Scale the data between -1 and 1.
+    Scale the data between 0 and 1.
 
     :param data: The data to be scaled. Data type : Pandas DataFrame
     :return: Scaled data. Data Type : Pandas DataFrame
     """
-    return (data - data.mean()) / (data.max() - data.min())
+    return (data - data.min()) / (data.max() - data.min())
 
 
 def run():
@@ -85,7 +85,7 @@ def run():
     # print(neural_net.coefs_)
 
     print('\nSaving trained neural net to file...')
-    pickle.dump(neural_net, open('neural_net', 'wb'))
+    pickle.dump(neural_net, open('trained_neural_net', 'wb'))
 
     visualize(pd.Series(neural_net.loss_curve_), graph_type='area')  # plot loss curve
 

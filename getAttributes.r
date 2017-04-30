@@ -15,12 +15,9 @@ library(warbleR)
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) != 1) {
-  fileConn <- file("failed")
-  writeLines(c("Failed Execution"), fileConn)
-  close(fileConn)
-  
   print ("USAGE ERROR!")
-  print ("Expected 1 Argument: Supplied"+length(args))
+  print ("Expected 1 Argument: Supplied ")
+  print (length(args))
   
   stop()
 }
@@ -30,12 +27,9 @@ location = args[1]
 soundLocation = paste(location, "/sounds", sep = "")
 textLocation = paste(location, "/output", sep = "")
 
-if (!dir.exists(file.path(Location, textLocation))){
-	dir.create(file.path(Location, textLocation))
-	} else {
-		print ("Couldn't create output folder! Start With Admin Rights!!")
-		stop()
-	}
+if (!dir.exists(file.path(location, "output"))) {
+  dir.create(file.path(location, "output"))
+}
 
 
 specan3 <-
@@ -153,7 +147,8 @@ specan3 <-
           units = "seconds"
         )
       
-      b <- bp #in case bp its higher than can be due to sampling rate
+      b <-
+        bp #in case bp its higher than can be due to sampling rate
       if (b[2] > ceiling(r@samp.rate / 2000) - 1)
         b[2] <- ceiling(r@samp.rate / 2000) - 1
       

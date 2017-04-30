@@ -1,5 +1,5 @@
 """Record a few seconds of audio and save to a WAVE file."""
-
+import os
 import time
 import wave
 
@@ -15,6 +15,9 @@ WAVE_OUTPUT_FILENAME = 'output.wav'
 p = pyaudio.PyAudio()
 
 stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
+
+if not os.path.exists('sounds'):
+    os.makedirs('sounds')
 
 
 def run():
