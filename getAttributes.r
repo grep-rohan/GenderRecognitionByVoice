@@ -14,20 +14,29 @@ library(warbleR)
 # library(e1071)
 
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 2) {
+if (length(args) != 1) {
   fileConn <- file("failed")
   writeLines(c("Failed Execution"), fileConn)
   close(fileConn)
   
   print ("USAGE ERROR!")
-  print ("Expected 2 Argument: Supplied"+length(args))
+  print ("Expected 1 Argument: Supplied"+length(args))
   
   stop()
 }
 
+
 location = args[1]
 soundLocation = paste(location, "/sounds", sep = "")
 textLocation = paste(location, "/output", sep = "")
+
+if (!dir.exists(file.path(Location, textLocation))){
+	dir.create(file.path(Location, textLocation))
+	} else {
+		print ("Couldn't create output folder! Start With Admin Rights!!")
+		stop()
+	}
+
 
 specan3 <-
   function(X,
