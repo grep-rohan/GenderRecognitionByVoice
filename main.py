@@ -8,8 +8,7 @@ import neural_net
 import sound_recorder
 
 if __name__ == '__main__':
-    exit_ = False
-    while not exit_:
+    while True:
         print('\nMenu')
         print('1. Train Neural Net')
         print('2. Analyse Voice')
@@ -25,20 +24,23 @@ if __name__ == '__main__':
                 sound_recorder.run()
 
                 print('\nExtracting data from recorded voice...\n')
-                run(['Rscript', 'getAttributes.r', os.getcwd()])
+                run(['Rscript', 'getAttributes.r',
+                     os.getcwd()])  # running R script for extracting data from recorded voice
 
-                print('\nPreprocessing extracted data...')
+                print('\n\nPreprocessing extracted data...')
                 data = pd.read_csv('output/voiceDetails.csv')
                 del data['peakf'], data['sound.files'], data['selec'], data['duration']
                 dataset = pd.read_csv('voice.csv')
                 dataset = dataset.iloc[:, :-1]
-                data = (data - dataset.min()) / (dataset.max() - dataset.min())  # scale
+                data = (data - dataset.mean()) / (dataset.max() - dataset.min())  # scale
 
                 trained_neural_net = pickle.load(open('trained_neural_net', 'rb'))  # load trained neural net from file
-                print()
-                print('Female' if trained_neural_net.predict(data)[0] == 0 else 'Male')
+
+                print('\nPrediction: \r')
+                print('Female' if trained_neural_net.predict(data)[0] == 0 else 'Male')  # print prediction
+                break
         elif option == '3':
             print('\nExiting...')
-            exit_ = True
+            break
         else:
             print('\nInvalid option. Please try again...')

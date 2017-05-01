@@ -37,9 +37,9 @@ def run():
         frames.append(data)
 
     print('\nRecording Saved.')
-
     stream.stop_stream()
     stream.close()
+
     p.terminate()
 
     wf = wave.open('sounds/' + WAVE_OUTPUT_FILENAME, 'wb')
