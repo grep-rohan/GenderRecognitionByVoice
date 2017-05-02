@@ -85,37 +85,34 @@ def get_accuracy(x_train, x_test, y_train, y_test, clf):
     :param clf: Trained classifier object.
     :return: None
     """
+    print('\nTraining Results:')
     correct = 0
     for index in range(len(y_train)):
         predicted = clf.predict(x_train.iloc[index, :])
         actual = y_train[index]
         if actual == predicted:
             correct += 1
-    print('Training Accuracy = %.2f%%' % (correct / len(y_train) * 100))
+    print('Accuracy = %.1f%%' % (correct / len(y_train) * 100))
 
-    # tp = tn = fp = fn = 0
-
-    correct = 0
+    tp = tn = fp = fn = 0
     for index in range(len(y_test)):
         predicted = clf.predict(x_test.iloc[index, :])
         actual = y_test[index]
-        if actual == predicted:
-            correct += 1
-    print('Testing Accuracy    = %.2f%%' % (correct / len(y_test) * 100))
-
-    # if actual == predicted == 0:
-    #     tn += 1
-    # elif actual == predicted == 1:
-    #     tp += 1
-    # elif actual == 0 != predicted:
-    #     fp += 1
-    # else:
-    #     fn += 1
-    # accuracy = (tp + tn) / (tp + tn + fp + fn)
-    # precision = tp / (tp + fp)
-    # recall = tp / (tp + fn)
-    # specificity = tn / (tn + fp)
-    # print('\nTesting Results:')
-    # print('Precision   = %.1f%%' % (precision * 100))
-    # print('Recall      = %.1f%%' % (recall * 100))
-    # print('Specificity = %.1f%%' % (specificity * 100))
+        if actual == predicted == 0:
+            tn += 1
+        elif actual == predicted == 1:
+            tp += 1
+        elif actual == 0 != predicted:
+            fp += 1
+        else:
+            fn += 1
+    # print(tp, fp, tn, fn)
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+    specificity = tn / (tn + fp)
+    print('\nTesting Results:')
+    print('Accuracy  = %.1f%%' % (accuracy * 100))
+    print('Precision   = %.1f%%' % (precision * 100))
+    print('Recall      = %.1f%%' % (recall * 100))
+    print('Specificity = %.1f%%' % (specificity * 100))

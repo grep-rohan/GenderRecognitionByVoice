@@ -11,9 +11,9 @@ from data_process import *
 
 warnings.filterwarnings("ignore")
 
-clf_names = ('Nearest Neighbors', 'SVM', 'Decisin Tree', 'Random Forest', 'Neural Net')  # classifier names
-clfs = (KNeighborsClassifier(), SVC(), DecisionTreeClassifier(), RandomForestClassifier(),
-        MLPClassifier())  # classifier objects
+clf_names = ('Nearest Neighbors', 'SVM', 'Decision Tree', 'Random Forest', 'Neural Net')  # classifier names
+clfs = (KNeighborsClassifier(n_neighbors=100, weights='distance'), SVC(), DecisionTreeClassifier(),
+        RandomForestClassifier(), MLPClassifier())  # classifier objects
 
 
 def train_clf(x_train, y_train, clf):
