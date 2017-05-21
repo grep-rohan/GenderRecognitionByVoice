@@ -1,19 +1,15 @@
 # Gender Recognition By Voice
 
-# getAttributes.R 
-  retrives information like meanfrequency,std etc. from the audio file.
-  
-  # USAGE:
-  Requires 2 Arguments:
-  Rscript getAttributes.R locationToAnyFolderWithNoBackSlashInTheEnd theNameOfAudioFileNameWithExtension
-  
-  # Example:
-  Rscript getAttributes.R home/siddhant/Documents/Code/GR helloworld.wav
-  
-  # Requirements:
-   1. warbleR
-   2. seeware
-   3. tuneR
-   4. maps
-  
-  
+## USAGE:
+Run `python clf_comparison.py` to compare different classifiers for the problem.
+
+Running `main.py` shows a menu in which you can choose either to train classifier or to record and analyse your voice.
+
+##Requirements
+###Python
+1. sklearn
+2. matplotlib
+3. pandas
+4. pyaudio
+###R
+1. warbleR
