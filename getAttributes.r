@@ -1,17 +1,6 @@
-# packages <- c('tuneR', 'seewave', 'fftw', 'caTools', 'randomForest', 'warbleR', 'mice', 'e1071', 'rpart', 'rpart-plot', 'xgboost', 'e1071')
-# if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-#   install.packages(setdiff(packages, rownames(installed.packages())))
-# }
 library(tuneR)
 library(seewave)
-# library(caTools)
-# library(rpart)
-# library(rpart.plot)
-# library(randomForest)
 library(warbleR)
-# library(mice)
-# library(xgboost)
-# library(e1071)
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) != 1) {
@@ -22,7 +11,6 @@ if (length(args) != 1) {
   stop()
 }
 
-
 location = args[1]
 soundLocation = paste(location, "/sounds", sep = "")
 textLocation = paste(location, "/output", sep = "")
@@ -30,7 +18,6 @@ textLocation = paste(location, "/output", sep = "")
 if (!dir.exists(file.path(location, "output"))) {
   dir.create(file.path(location, "output"))
 }
-
 
 specan3 <-
   function(X,
@@ -152,7 +139,6 @@ specan3 <-
       if (b[2] > ceiling(r@samp.rate / 2000) - 1)
         b[2] <- ceiling(r@samp.rate / 2000) - 1
       
-      
       #frequency spectrum analysis
       songspec <- seewave::spec(r, f = r@samp.rate, plot = FALSE)
       analysis <-
@@ -257,7 +243,6 @@ specan3 <-
     }))
     
     #change result names
-    
     rownames(x) <-
       c(
         "duration",
@@ -313,8 +298,6 @@ processFolder <- function(folderName) {
   acoustics <- specan3(data, parallel = 1)
   
   # Move back into parent folder.
-  
-  
   View(acoustics)
   
   setwd(textLocation)
@@ -322,58 +305,6 @@ processFolder <- function(folderName) {
               "voiceDetails.csv",
               sep = ",",
               row.names = FALSE)
-  
-  
-  
 }
 
-# soundLocation1="C:/Users/Rohan Sharma/Documents/Education/Semester 6/Machine Learning/Project/Code/sounds"
 processFolder(soundLocation)
-
-
-
-
-library(warbleR)
-
-#expects 2 arguments: location of the folder which contains all the scripts and sounds folder
-# and name of the sound file with extension
-
-
-
-# ****************** OLD CODE IN NEED OF REFRENCE ********
-
-
-# args <- commandArgs(trailingOnly = TRUE)
-# if (length(args) != 2) {
-#   fileConn <- file("failed")
-#   writeLines(c("Failed Execution"), fileConn)
-#   close(fileConn)
-
-#   print ("USAGE ERROR!")
-#   print ("Expected 2 Argument: Supplied"+length(args))
-
-#   stop()
-# }
-
-# location = args[1]
-# soundLocation = paste(location, "/sounds", sep = "")
-# textLocation = paste(location, "/output", sep = "")
-
-# filename = args[2]
-
-# fileInfo <- data.frame(
-#   sound.files = filename,
-#   selec = 1,
-#   start = 0,
-#   end = 20
-# )
-# result = specan(fileInfo,
-#                 bp = c(0, 0.28),
-#                 fast = TRUE,
-#                 path = soundLocation)
-
-# setwd(textLocation)
-# write.table(result,
-#             "voiceDetails.csv",
-#             sep = ",",
-#             row.names = FALSE)
