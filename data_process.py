@@ -1,6 +1,7 @@
 """Contains functions for data processing"""
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
@@ -48,7 +49,7 @@ def preprocess(data):
     y = LabelEncoder().fit_transform(y)  # encode label (female -> 0, male -> 1)
 
     # split into training and testing data with randomized order and return
-    return train_test_split(x, y, train_size=.6, random_state=1)
+    return train_test_split(x, y, train_size=.75, random_state=1)
 
 
 def visualize(data, style='ggplot', graph_type='line'):
@@ -88,7 +89,9 @@ def get_accuracy(x_train, x_test, y_train, y_test, clf):
     print('\nTraining Results:')
     correct = 0
     for index in range(len(y_train)):
-        predicted = clf.predict(x_train.iloc[index, :])
+        temp=x_train.iloc[index,:]
+        temp=np.array(temp).reshape((1,-1))
+        predicted = clf.predict(temp)
         actual = y_train[index]
         if actual == predicted:
             correct += 1
@@ -96,7 +99,9 @@ def get_accuracy(x_train, x_test, y_train, y_test, clf):
 
     tp = tn = fp = fn = 0
     for index in range(len(y_test)):
-        predicted = clf.predict(x_test.iloc[index, :])
+        temp1=x_test.iloc[index,:]
+        temp1=np.array(temp1).reshape((1,-1))
+        predicted = clf.predict(temp1)
         actual = y_test[index]
         if actual == predicted == 0:
             tn += 1
